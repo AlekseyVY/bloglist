@@ -17,7 +17,7 @@ beforeEach(async () => {
 
 describe('RESTful API testing block: ', () => {
 
-    test('GET on api/blogs returns all blogs', async () => {
+    test('GET request on api/blogs returns all blogs', async () => {
     const response = await api.get('/api/blogs')
         .expect(200)
     expect(response.body).toHaveLength(helper.initialBlogs.length)
@@ -27,6 +27,20 @@ describe('RESTful API testing block: ', () => {
         const result = await api.get('/api/blogs')
             .expect(200)
         expect(result.body[0].id).toBeDefined()
+    })
+
+    test('POST request saves blog to MongoDB', async () => {
+        const newBlog = {
+            title: "Shield Hero",
+            author: 'some japanese dude',
+            url: 'google.com',
+            likes: 777
+        }
+        await api.post('/api/blogs').send(newBlog)
+        const blogsEnd = await helper.blogsInDb()
+        expect(blogsEnd).toHaveLength(helper.initialBlogs.length + 1)
+        const content = blogsEnd.map(x => x.title)
+        expect(content).toContain('Shield Hero')
     })
 
 })
