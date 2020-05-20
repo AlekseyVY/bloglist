@@ -61,8 +61,7 @@ describe('RESTful API testing block: ', () => {
             likes: 999999999999,
             id: "5ec40f7b0106e62ad48bd397"
         }
-        const result = await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate)
-        console.log(result.data)
+        await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate)
     })
 })
 
