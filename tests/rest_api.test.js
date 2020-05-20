@@ -43,6 +43,27 @@ describe('RESTful API testing block: ', () => {
         expect(content).toContain('Shield Hero')
     })
 
+    test('DELETE request removes blog frog from MongoDB', async () => {
+        const blogsStart = await helper.blogsInDb()
+        const blogDelete = blogsStart[0]
+        await api.delete(`/api/blogs/${blogDelete.id}`).expect(204)
+        const blogsEnd = await helper.blogsInDb()
+        expect(blogsEnd).toHaveLength(helper.initialBlogs.length - 1)
+        const content = blogsEnd.map(x => x.title)
+        expect(content).not.toContain(blogDelete.title)
+    })
+
+    test('PUT request updates blog object in MongoDB', async () => {
+        const blogToUpdate = {
+            title: "Mars are first planet",
+            author: "Elon Musk",
+            url: "http:/marscolony/true",
+            likes: 999999999999,
+            id: "5ec40f7b0106e62ad48bd397"
+        }
+        const result = await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate)
+        console.log(result.data)
+    })
 })
 
 
