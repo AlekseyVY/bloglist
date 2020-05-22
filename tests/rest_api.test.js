@@ -65,6 +65,28 @@ describe('RESTful API testing block: ', () => {
     })
 })
 
+describe('User RESTful API testing', () => {
+    test('Test that invalid user cannot be added', async () => {
+        const newUser = {
+            name: "Aleksey",
+            password: "122345"
+        }
+
+        await api.post('/api/users').send(newUser)
+            .expect(500)
+    })
+
+    test('Test that password with less than 3 char is invalid', async () => {
+        const newUser = {
+            name: " Alekseyvyx",
+            username: "alekseyvyx1",
+            password: "1"
+        }
+        await api.post('/api/users').send(newUser)
+            .expect(400)
+    })
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
