@@ -2,7 +2,6 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/bloglist')
 const User = require('../models/users')
 const jwt = require('jsonwebtoken')
-const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
     const result = await Blog.find({})
